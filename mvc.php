@@ -18,8 +18,8 @@ $server->on('request', function(swoole_http_request $request, swoole_http_respon
     } 
 
     // 获取 模块, 控制器, 方法
-    $model      = (isset($path_info[1]) && !empty($path_info[1])) ? $path_info[1] : 'Home';
-    $controller = (isset($path_info[2]) && !empty($path_info[2])) ? $path_info[2] : 'Index';
+    $model      = (isset($path_info[1]) && !empty($path_info[1])) ? $path_info[1] : 'home';
+    $controller = (isset($path_info[2]) && !empty($path_info[2])) ? $path_info[2] : 'index';
     $method     = (isset($path_info[3]) && !empty($path_info[3])) ? $path_info[3] : 'index';
 
     // var_dump($model,$controller,$method);
