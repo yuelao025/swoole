@@ -14,11 +14,22 @@ $server->set(array(
 ));
 
 
+//master
+$server->on('Start', function($serv, $worker_id){
+        swoole_set_process_name("server master worker");
+});
+
+//manager
+$server->on('managerStart', function($serv, $worker_id){
+    swoole_set_process_name("server manager worker");
+});
+
+//worker
 $server->on('WorkerStart', function($serv, $worker_id){
     if($worker_id >= $serv->setting['worker_num']) {
-        swoole_set_process_name(" task worker");
+        swoole_set_process_name("server task worker");
     } else {
-        swoole_set_process_name("  worker");
+        swoole_set_process_name("server  worker");
     }
 });
 
