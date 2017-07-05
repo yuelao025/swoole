@@ -5,6 +5,20 @@
 //
 $server = new swoole_http_server('0.0.0.0', 8008);
 
+$config  = array(
+    //自定义配置
+    'pid_path' => '/tmp/',//dora 自定义变量，用来保存pid文件
+    //'response_header' => array('Content_Type' => 'application/json; charset=utf-8'),
+    'master_pid' => 'doramaster.pid', //dora master pid 保存文件
+    'manager_pid' => 'doramanager.pid',//manager pid 保存文件
+    'log_dump_type' => 'file',//file|logserver
+    'log_path' => '/tmp/bizlog/', //业务日志 dump path
+
+    //const MASTER_PID = './dorarpc.pid';
+    //const MANAGER_PID = './dorarpcmanager.pid';
+);
+
+
 $server->set(array(
 //    'reactor_num' => 2, //reactor thread num
     'task_worker_num' => 2,
@@ -16,13 +30,24 @@ $server->set(array(
 
 
 //master
-$server->on('Start', function($serv){
+$server->on('Start', function($serv) use ($config){
+
         swoole_set_process_name("server master worker");
+
+        $master_pid_path = $config['pid_path'].$config['master_pid'];
+        $master_pid_data = $serv->master_pid;
+
+        file_put_contents($master_pid_path,$master_pid_data);
 });
 
 //manager
-$server->on('managerStart', function($serv){
+$server->on('managerStart', function($serv) use($config){
     swoole_set_process_name("server manager worker");
+
+    $manager_pid_path = $config['pid_path'].$config['manager_pid'];
+    $manager_pid_data = $serv->manager_pid;
+    file_put_contents($manager_pid_path,$manager_pid_data);
+
 });
 
 //worker
@@ -79,9 +104,9 @@ $server->on('request', function(swoole_http_request $request, swoole_http_respon
     // var_dump($model,$controller,$method);
 
     //放在此处是ok的；
-    swoole_timer_tick(1000, function(){
-        echo "timeout\n";
-    });
+//    swoole_timer_tick(1000, function(){
+//        echo "timeout\n";
+//    });
 
 
     try {

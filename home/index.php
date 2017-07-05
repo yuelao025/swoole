@@ -4,6 +4,7 @@
 namespace home;
 
 use util\test;
+use util\ip;
 
 class index
 {
@@ -18,5 +19,11 @@ class index
 	    echo $info;
 		return $info." default index.action..";
 	}
+
+	public function getIp()
+    {
+        $ip = ip::getLocalIp();
+        return $ip;
+    }
 
 }
