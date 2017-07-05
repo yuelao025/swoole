@@ -12,7 +12,7 @@ class order
 
 	public function index()
 	{
-		return "index.action..";
+		return " order index.action..";
 	}
 
 }

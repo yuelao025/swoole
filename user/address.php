@@ -12,7 +12,7 @@ class address
 
 	public function index()
 	{
-		return "index.action..";
+		return "address index.action..";
 	}
 
 }

@@ -12,7 +12,7 @@ class product
 
 	public function index()
 	{
-		return "index.action..";
+		return "product index.action..";
 	}
 
 }

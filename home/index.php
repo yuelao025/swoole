@@ -12,7 +12,7 @@ class index
 
 	public function index()
 	{
-		return "index.action..";
+		return " default index.action..";
 	}
 
 }

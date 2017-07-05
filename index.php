@@ -4,6 +4,15 @@
 
 $server = new swoole_http_server('0.0.0.0', 8008);
 
+$server->on('WorkerStart', function($serv, $worker_id){
+    if($worker_id >= $serv->setting['worker_num']) {
+        swoole_set_process_name(" task worker");
+    } else {
+        swoole_set_process_name("  worker");
+    }
+});
+
+
 $server->on('request', function(swoole_http_request $request, swoole_http_response $response){
     $path_info = explode('/', $request->server['path_info']);
     if( empty($path_info) )
