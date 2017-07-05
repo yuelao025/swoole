@@ -1,7 +1,8 @@
 
 <?php
 
-
+// 进程总是 2+m+n = master+manager+task worker + worker
+//  
 $server = new swoole_http_server('0.0.0.0', 8008);
 
 $server->set(array(
