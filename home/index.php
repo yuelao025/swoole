@@ -3,6 +3,8 @@
 
 namespace home;
 
+use util\test;
+
 class index
 {
 	public function demo()
@@ -12,7 +14,9 @@ class index
 
 	public function index()
 	{
-		return " default index.action..";
+	    $info = test::demo();
+	    echo $info;
+		return $info." default index.action..";
 	}
 
 }

@@ -2,7 +2,7 @@
 <?php
 
 // 进程总是 2+m+n = master+manager+task worker + worker
-//  
+//
 $server = new swoole_http_server('0.0.0.0', 8008);
 
 $server->set(array(
@@ -27,14 +27,17 @@ $server->on('managerStart', function($serv){
 
 //worker
 $server->on('WorkerStart', function($serv, $worker_id){
+    //task worker
     if($worker_id >= $serv->setting['worker_num']) {
         swoole_set_process_name("server task worker");
     } else {
+        //worker
         swoole_set_process_name("server  worker");
     }
 });
 
 
+//task finish 需要配对
 $server->on('task', function($serv, $worker_id){
    echo "task";
 });
@@ -101,10 +104,9 @@ function autoLoader($class)
     // 构建文件名, 将namespace中的 '\' 替换为文件系统的分隔符 '/'
     $baseClasspath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
     // var_dump("autoLoader:".$baseClasspath);
-
     // 如果文件存在, 引用文件
     $classpath = __DIR__ . DIRECTORY_SEPARATOR . $baseClasspath;
-    if (\is_file($classpath)) {
+    if (is_file($classpath)) {
         require "{$classpath}";
         return;
     }
