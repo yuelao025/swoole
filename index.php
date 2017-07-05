@@ -9,8 +9,8 @@ $config  = array(
     //自定义配置
     'pid_path' => '/tmp/',//dora 自定义变量，用来保存pid文件
     //'response_header' => array('Content_Type' => 'application/json; charset=utf-8'),
-    'master_pid' => 'doramaster.pid', //dora master pid 保存文件
-    'manager_pid' => 'doramanager.pid',//manager pid 保存文件
+    'master_pid' => 'rpcmaster.pid', //dora master pid 保存文件
+    'manager_pid' => 'prcmanager.pid',//manager pid 保存文件
     'log_dump_type' => 'file',//file|logserver
     'log_path' => '/tmp/bizlog/', //业务日志 dump path
 
