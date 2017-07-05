@@ -40,12 +40,22 @@ $server->on('WorkerStart', function($serv, $worker_id){
 //task finish 需要配对
 $server->on('task', function($serv, $worker_id){
    echo "task";
+//    swoole_timer_tick(1000, function(){
+//        echo "timeout\n";
+//    });
 });
 
 
 $server->on('finish', function($serv, $worker_id){
     echo "finish";
 });
+
+
+//放在外面也是 ok 的
+//swoole_timer_tick(1000, function(){
+//    echo "timeout\n";
+//});
+
 
 
 $server->on('request', function(swoole_http_request $request, swoole_http_response $response){
@@ -67,6 +77,12 @@ $server->on('request', function(swoole_http_request $request, swoole_http_respon
     $method     = (isset($path_info[3]) && !empty($path_info[3])) ? $path_info[3] : 'index';
 
     // var_dump($model,$controller,$method);
+
+    //放在此处是ok的；
+    swoole_timer_tick(1000, function(){
+        echo "timeout\n";
+    });
+
 
     try {
         $class_name = "\\{$model}\\{$controller}";
@@ -111,6 +127,8 @@ function autoLoader($class)
         return;
     }
 }
+
+
 // 注册自动加载函数
 spl_autoload_register('autoLoader');
 $server->start();
