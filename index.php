@@ -15,12 +15,12 @@ $server->set(array(
 
 
 //master
-$server->on('Start', function($serv, $worker_id){
+$server->on('Start', function($serv){
         swoole_set_process_name("server master worker");
 });
 
 //manager
-$server->on('managerStart', function($serv, $worker_id){
+$server->on('managerStart', function($serv){
     swoole_set_process_name("server manager worker");
 });
 
