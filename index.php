@@ -23,6 +23,16 @@ $server->on('WorkerStart', function($serv, $worker_id){
 });
 
 
+$server->on('task', function($serv, $worker_id){
+   echo "task";
+});
+
+
+$server->on('finish', function($serv, $worker_id){
+    echo "finish";
+});
+
+
 $server->on('request', function(swoole_http_request $request, swoole_http_response $response){
     $path_info = explode('/', $request->server['path_info']);
     if( empty($path_info) )
