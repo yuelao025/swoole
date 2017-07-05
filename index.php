@@ -10,9 +10,10 @@ $config  = array(
     'pid_path' => '/tmp/',//dora 自定义变量，用来保存pid文件
     //'response_header' => array('Content_Type' => 'application/json; charset=utf-8'),
     'master_pid' => 'rpcmaster.pid', //dora master pid 保存文件
-    'manager_pid' => 'prcmanager.pid',//manager pid 保存文件
+    'manager_pid' => 'rpcmanager.pid',//manager pid 保存文件
     'log_dump_type' => 'file',//file|logserver
     'log_path' => '/tmp/bizlog/', //业务日志 dump path
+
 
     //const MASTER_PID = './dorarpc.pid';
     //const MANAGER_PID = './dorarpcmanager.pid';
@@ -26,6 +27,7 @@ $server->set(array(
 //    'backlog' => 128,   //listen backlog
 //    'max_request' => 50,
 //    'dispatch_mode' => 1,
+    'log_file' => '/tmp/sw_server.log',//swoole 系统日志，任何代码内echo都会在这里输出
 ));
 
 
@@ -36,7 +38,6 @@ $server->on('Start', function($serv) use ($config){
 
         $master_pid_path = $config['pid_path'].$config['master_pid'];
         $master_pid_data = $serv->master_pid;
-
         file_put_contents($master_pid_path,$master_pid_data);
 });
 
