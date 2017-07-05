@@ -4,6 +4,16 @@
 
 $server = new swoole_http_server('0.0.0.0', 8008);
 
+$server->set(array(
+//    'reactor_num' => 2, //reactor thread num
+    'task_worker_num' => 2,
+    'worker_num' => 2,    //worker process num
+//    'backlog' => 128,   //listen backlog
+//    'max_request' => 50,
+//    'dispatch_mode' => 1,
+));
+
+
 $server->on('WorkerStart', function($serv, $worker_id){
     if($worker_id >= $serv->setting['worker_num']) {
         swoole_set_process_name(" task worker");
