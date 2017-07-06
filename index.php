@@ -5,7 +5,7 @@
 //
 $server = new swoole_http_server('0.0.0.0', 8008);
 
-$redis = new redis();
+$redis = new \redis();
 $redis->connect("127.0.0.1",6379);
 
 
