@@ -103,12 +103,12 @@ $server->on('managerStart', function(swoole_server $serv) use($config){
     $manager_pid_data = $serv->manager_pid;
     file_put_contents($manager_pid_path,$manager_pid_data);
 
-
-    $serv->addProcess(new swoole_process(function (){
-        echo 11;
-        file_put_contents("new_process_text.txt","new process");
-
-    }));
+//  错误！
+//    $serv->addProcess(new swoole_process(function (){
+//        echo 11;
+//        file_put_contents("new_process_text.txt","new process");
+//
+//    }));
 
 
 });
@@ -160,8 +160,6 @@ $server->on('finish', function($serv, $worker_id){
 //swoole_timer_after(1000,function (){
 //   echo "timer after !";
 //});
-
-
 
 
 
