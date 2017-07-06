@@ -240,20 +240,26 @@ abstract class rpcServer
 
     public function newProcess()
     {
-        $process = new \swoole_process(function (){
-            swoole_set_process_name("new!");
-        });
-
-//        $process_pid = $process->pid;
+//        $process = new \swoole_process(function (){
+////            swoole_set_process_name("new!");
+//        });
+        //        $process_pid = $process->pid;
 //        var_dump($process_pid);
 //        file_put_contents("new_process_text.txt",$process_pid);
 
-        $this->http_server->addProcess(new \swoole_process(function (){
-            swoole_set_process_name("hello");
+        $this->http_server->addProcess(new swoole_process(function (){
+
+            ///记住了改进程必须一直在；否则每次都会重新拉取！！严重注意了！
+            while(1)
+            {
+
+//                echo 111;
+            }
         }));
+//        $process->start();
 
     }
-
+//    public function
     public function __destruct()
     {
         // TODO: Implement __destruct() method.
