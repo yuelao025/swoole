@@ -8,7 +8,7 @@ $server = new swoole_http_server('0.0.0.0', 8008);
 
 
 //添加多端口
-$tcp_server = $server->addlistener('0.0.0.0','8080',SWOOLE_SOCK_TCP);
+$tcp_server = $server->addlistener('0.0.0.0',8080,SWOOLE_SOCK_TCP);
 
 
 $tcp_server->on('Receive',function($server,$fd,$from_id ,$data ) {

@@ -9,7 +9,7 @@ class Client
         $this->client = new swoole_client(SWOOLE_SOCK_TCP);
     }
     public function connect() {
-        if( !$this->client->connect("127.0.0.1", 9501 , 1) ) {
+        if( !$this->client->connect("127.0.0.1", 8080 , 1) ) {
             echo "Error: {$this->client->errCode}\n";
             exit;
         }
