@@ -5,6 +5,10 @@
 //
 $server = new swoole_http_server('0.0.0.0', 8008);
 
+$redis = new redis();
+$redis->connect("127.0.0.1",6379);
+
+
 $config  = array(
     //自定义配置
     'pid_path' => '/tmp/',//dora 自定义变量，用来保存pid文件
@@ -52,13 +56,23 @@ $server->on('managerStart', function($serv) use($config){
 });
 
 //worker
-$server->on('WorkerStart', function($serv, $worker_id){
+$server->on('WorkerStart', function(swoole_server $serv, $worker_id) use ($redis){
     //task worker
     if($worker_id >= $serv->setting['worker_num']) {
+
+        file_put_contents("debug.txt",$worker_id."\r\n",FILE_APPEND);
+        $redis->lpush("debug_work_id",$worker_id);
+//        var_dump($worker_id);
         swoole_set_process_name("server task worker");
     } else {
         //worker
         swoole_set_process_name("server  worker");
+        $data = ['info'=> 'some info ...'];
+        file_put_contents("debug.txt",$worker_id."\r\n",FILE_APPEND);
+        $redis->lpush("debug_work_id",$worker_id);
+
+//        var_dump($worker_id)."\r\n";
+//        $serv->task($data);
     }
 });
 
