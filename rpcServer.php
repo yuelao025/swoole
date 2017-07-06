@@ -7,7 +7,7 @@
  * Time: 下午4:35
  */
 
-class rpcServer
+abstract class rpcServer
 {
     private $http_config = [//    'reactor_num' => 2, //reactor thread num
         'task_worker_num' => 2,
@@ -101,6 +101,8 @@ class rpcServer
         file_put_contents($manager_pid_path, $manager_pid_data);
     }
 
+    abstract public function initTask();
+
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
         $redis = new \redis();
@@ -109,9 +111,13 @@ class rpcServer
         $task_worker_id = $serv->worker_pid;
 
         if ($worker_id >= $serv->setting['worker_num']) {
+            // task worker
             file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
             $redis->lpush("debug_work_id", $worker_id);
             swoole_set_process_name("server task worker");
+
+            $this->initTask($serv, $worker_id);
+
         } else {
             //worker
             swoole_set_process_name("server  worker");
@@ -124,9 +130,12 @@ class rpcServer
 
     }
 
+    abstract public function todo();
+
     public function onTask(swoole_server $serv, $worker_id)
     {
         echo "task";
+        $this->todo();
     }
 
 
@@ -206,6 +215,9 @@ class rpcServer
     {
         $this->http_server->set($this->http_config);
         $this->tcp_server->set($this->tcp_config);
+
+        $this->newProcess();
+
         $this->http_server->start();
     }
 
@@ -226,6 +238,27 @@ class rpcServer
     }
 
 
+    public function newProcess()
+    {
+        $process = new \swoole_process(function (){
+            swoole_set_process_name("new!");
+        });
+
+//        $process_pid = $process->pid;
+//        var_dump($process_pid);
+//        file_put_contents("new_process_text.txt",$process_pid);
+
+        $this->http_server->addProcess(new \swoole_process(function (){
+            swoole_set_process_name("hello");
+        }));
+
+    }
+
+    public function __destruct()
+    {
+        // TODO: Implement __destruct() method.
+        $this->http_server->shutdown();
+    }
 
 
 }

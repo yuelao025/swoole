@@ -15,6 +15,16 @@ class customServ extends rpcServer
     {
 
     }
+
+    public function initTask()
+    {
+
+    }
+
+    public function todo()
+    {
+
+    }
 }
 
 
