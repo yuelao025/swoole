@@ -76,14 +76,24 @@ $tcp_server->set(array(
 
 
 //master
-$server->on('Start', function($serv) use ($config){
+$server->on('Start', function(swoole_server $serv) use ($config){
 
         swoole_set_process_name("server master worker");
 
         $master_pid_path = $config['pid_path'].$config['master_pid'];
         $master_pid_data = $serv->master_pid;
         file_put_contents($master_pid_path,$master_pid_data);
+
+        //can not add a process
+//        $serv->addProcess(new swoole_process(function (){
+//            file_put_contents("new_process_text.txt","new process");
+//
+//        }));
 });
+
+
+
+
 
 //manager
 $server->on('managerStart', function(swoole_server $serv) use($config){
@@ -92,6 +102,14 @@ $server->on('managerStart', function(swoole_server $serv) use($config){
     $manager_pid_path = $config['pid_path'].$config['manager_pid'];
     $manager_pid_data = $serv->manager_pid;
     file_put_contents($manager_pid_path,$manager_pid_data);
+
+
+    $serv->addProcess(new swoole_process(function (){
+        echo 11;
+        file_put_contents("new_process_text.txt","new process");
+
+    }));
+
 
 });
 
