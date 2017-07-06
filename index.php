@@ -5,9 +5,6 @@
 //
 $server = new swoole_http_server('0.0.0.0', 8008);
 
-$redis = new \redis();
-$redis->connect("127.0.0.1",6379);
-
 
 $config  = array(
     //自定义配置
@@ -56,8 +53,12 @@ $server->on('managerStart', function(swoole_server $serv) use($config){
 });
 
 //worker
-$server->on('WorkerStart', function(swoole_server $serv, $worker_id) use ($redis){
+$server->on('WorkerStart', function(swoole_server $serv, $worker_id){
     //task worker
+
+    $redis = new \redis();
+    $redis->connect("127.0.0.1",6379);
+
     $task_worker_id = $serv->worker_pid;
 
     if($worker_id >= $serv->setting['worker_num']) {
