@@ -82,9 +82,9 @@ $server->on('finish', function($serv, $worker_id){
 //    echo "timeout\n";
 //});
 
-swoole_timer_after(1000,function (){
-   echo "timer after !";
-});
+//swoole_timer_after(1000,function (){
+//   echo "timer after !";
+//});
 
 
 $server->on('request', function(swoole_http_request $request, swoole_http_response $response){
@@ -111,6 +111,11 @@ $server->on('request', function(swoole_http_request $request, swoole_http_respon
 //    swoole_timer_tick(1000, function(){
 //        echo "timeout\n";
 //    });
+
+    // ok
+    swoole_timer_after(1000,function (){
+        echo "request timer after !";
+    });
 
 
     try {
