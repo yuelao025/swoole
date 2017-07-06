@@ -16,7 +16,7 @@ class index
 	public function index()
 	{
 	    $info = test::demo();
-	    echo $info;
+//	    echo $info;
 		return $info." default index.action..";
 	}
 

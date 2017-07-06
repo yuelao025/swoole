@@ -112,10 +112,10 @@ $server->on('request', function(swoole_http_request $request, swoole_http_respon
 //        echo "timeout\n";
 //    });
 
-    // ok
-    swoole_timer_after(1000,function (){
-        echo "request timer after !";
-    });
+//    // ok
+//    swoole_timer_after(1000,function (){
+//        echo "request timer after !";
+//    });
 
 
     try {
