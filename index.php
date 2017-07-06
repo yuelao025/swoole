@@ -46,7 +46,7 @@ $server->on('Start', function($serv) use ($config){
 });
 
 //manager
-$server->on('managerStart', function($serv) use($config){
+$server->on('managerStart', function(swoole_server $serv) use($config){
     swoole_set_process_name("server manager worker");
 
     $manager_pid_path = $config['pid_path'].$config['manager_pid'];
@@ -58,20 +58,19 @@ $server->on('managerStart', function($serv) use($config){
 //worker
 $server->on('WorkerStart', function(swoole_server $serv, $worker_id) use ($redis){
     //task worker
-    if($worker_id >= $serv->setting['worker_num']) {
+    $task_worker_id = $serv->worker_pid;
 
-        file_put_contents("debug.txt",$worker_id."\r\n",FILE_APPEND);
+    if($worker_id >= $serv->setting['worker_num']) {
+        file_put_contents("debug.txt",$task_worker_id."=>".$worker_id."\r\n",FILE_APPEND);
         $redis->lpush("debug_work_id",$worker_id);
-//        var_dump($worker_id);
         swoole_set_process_name("server task worker");
     } else {
         //worker
         swoole_set_process_name("server  worker");
-        $data = ['info'=> 'some info ...'];
-        file_put_contents("debug.txt",$worker_id."\r\n",FILE_APPEND);
-        $redis->lpush("debug_work_id",$worker_id);
 
-//        var_dump($worker_id)."\r\n";
+        $data = ['info'=> 'some info ...'];
+        file_put_contents("debug.txt",$task_worker_id."=>".$worker_id."\r\n",FILE_APPEND);
+        $redis->lpush("debug_work_id",$worker_id);
 //        $serv->task($data);
     }
 });
