@@ -6,6 +6,20 @@
 $server = new swoole_http_server('0.0.0.0', 8008);
 
 
+
+//添加多端口
+$tcp_server = $server->addlistener('0.0.0.0','8080',SWOOLE_SOCK_TCP);
+
+
+$tcp_server->on('Receive',function($server,$fd,$from_id ,$data ) {
+    echo "receive :".$data;
+    $server->tick(1000, function () use ($server, $fd) {
+        $server->send($fd, "hello world");
+    });
+});
+
+
+
 $config  = array(
     //自定义配置
     'pid_path' => '/tmp/',//dora 自定义变量，用来保存pid文件
@@ -20,7 +34,7 @@ $config  = array(
     //const MANAGER_PID = './dorarpcmanager.pid';
 );
 
-
+// http server configure
 $server->set(array(
 //    'reactor_num' => 2, //reactor thread num
     'task_worker_num' => 2,
@@ -30,6 +44,35 @@ $server->set(array(
 //    'dispatch_mode' => 1,
     'log_file' => '/tmp/sw_server.log',//swoole 系统日志，任何代码内echo都会在这里输出
 ));
+
+
+
+//tcp server configure
+//客户端 服务器端报文协议 否则报文是流机制
+$tcp_server->set(array(
+    'open_length_check' => 1,
+    'package_length_type' => 'N',
+    'package_length_offset' => 0,
+    'package_body_offset' => 4,
+
+    'package_max_length' => 2097152, // 1024 * 1024 * 2,
+    'buffer_output_size' => 3145728, //1024 * 1024 * 3,
+    'pipe_buffer_size' => 33554432, // 1024 * 1024 * 32,
+
+    'open_tcp_nodelay' => 1,
+
+    'backlog' => 3000
+));
+
+// 不能这样设置？
+//$tcp_server->set(array(
+//    'task_worker_num' => 1,
+//    'worker_num' => 1,    //worker process num
+////    'backlog' => 128,   //listen backlog
+////    'max_request' => 50,
+//    'log_file' => '/tmp/tcp_server.log',//swoole 系统日志，任何代码内echo都会在这里输出
+//));
+
 
 
 //master
@@ -99,6 +142,9 @@ $server->on('finish', function($serv, $worker_id){
 //swoole_timer_after(1000,function (){
 //   echo "timer after !";
 //});
+
+
+
 
 
 $server->on('request', function(swoole_http_request $request, swoole_http_response $response){
