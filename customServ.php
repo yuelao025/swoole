@@ -11,19 +11,20 @@ require_once "rpcServer.php";
 
 class customServ extends rpcServer
 {
-    public function demo()
+    //other func
+    private function demo()
     {
 
     }
 
     public function initTask()
     {
-
+        echo __FUNCTION__;
     }
 
     public function todo()
     {
-
+        echo __FUNCTION__;
     }
 }
 
