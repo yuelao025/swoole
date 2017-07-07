@@ -7,6 +7,7 @@
  */
 
 namespace  util;
+
 class test{
 
     public static function demo()

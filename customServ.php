@@ -24,7 +24,7 @@ class customServ extends rpcServer
 
     public function todo()
     {
-        echo __FUNCTION__."\r\n";
+//        echo __FUNCTION__."\r\n";
     }
 
     public function initWorker($serv, $worker_id)

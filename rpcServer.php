@@ -156,9 +156,10 @@ abstract class rpcServer
 
 //        var_dump($this->redis_pool);
 //        var_dump("receive :".$data);
-
-
+//        echo "receive :";
         $msg_normal = "test 哦拉了绿绿!";
+
+//        die;
 
         $msg_normal = packet::packEncode($msg_normal);
 
@@ -169,7 +170,7 @@ abstract class rpcServer
 //        $pkg = pack('N', strlen($pkg)).$pkg;
 //        $s_pkg["pkg"] = packet::packEncode($pkg,"tcp");
         $s_pkg["pkg"] = $msg_normal;
-        var_dump($s_pkg["pkg"]);
+//        var_dump($s_pkg["pkg"]);
         $s_pkg["fd"] = $fd;
 //        $server->send($fd, $s_pkg);
 
@@ -179,8 +180,8 @@ abstract class rpcServer
 
     public function onTask(swoole_server $serv, $task_id, $from_id, $data)
     {
-        var_dump(" task_id: ".$task_id
-                    ." from_id :".$from_id,$data);
+//        var_dump(" task_id: ".$task_id
+//                    ." from_id :".$from_id,$data);
         $this->todo();
         //方式1 直接发送；
 //        $rlt =  $serv->send($data["fd"],$data["pkg"]);
@@ -196,7 +197,7 @@ abstract class rpcServer
 
        $rlt =  $serv->send($data["fd"],$data["pkg"]);
 //       var_dump($rlt);
-        echo "finish";
+//        echo "finish";
     }
 
     public function onRequest(swoole_http_request $request, swoole_http_response $response)

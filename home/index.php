@@ -5,18 +5,37 @@ namespace home;
 
 use util\test;
 use util\ip;
+use test\climid;
+
 
 class index
 {
+
+    private $config = [
+        'group1' =>
+            array (
+                '127.0.0.1_8080' =>
+                    array (
+                        'ip' => '127.0.0.1',
+                        'port' => 8080,
+                        'updatetime' => '1482239138',
+                    ),
+            )
+    ];
+
+
 	public function demo()
 	{
-		return __FILE__;
+	    $ins = new climid($this->config);
+        $ret = $ins->singleAPI("/module_a/abc", array("mark" => 234), 2, "127.0.0.1","8080");
+//        var_dump( $ret);
+	    return json_encode($ret);
+
 	}
 
 	public function index()
 	{
 	    $info = test::demo();
-//	    echo $info;
 		return $info." default index.action..";
 	}
 
