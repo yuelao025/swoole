@@ -34,7 +34,7 @@ class Client
         //二进制形式发送 or [ok]
 //        $msg_normal = pack("N" , strlen($msg_normal) ). $msg_normal;
         $i = 0;
-        while( $i < 3 ) {
+        while( $i < 1 ) {
             $this->client->send( $msg_normal );
             sleep(1);
             $i ++;

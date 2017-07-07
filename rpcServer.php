@@ -55,6 +55,8 @@ abstract class rpcServer
     private $http_server;
     private $tcp_server;
 
+    private $redis_pool = [];
+
 
     /**
      * rpcserver constructor.
@@ -113,7 +115,15 @@ abstract class rpcServer
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
         $redis = new \redis();
-        $redis->connect("127.0.0.1", 6379);
+        $status = $redis->connect("127.0.0.1", 6379);
+        if($status)
+        {
+            $this->redis_pool[$worker_id] = $redis;
+
+        }else{
+            var_dump($status);
+        }
+        //
 
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
@@ -144,14 +154,17 @@ abstract class rpcServer
 
     public function onTask(swoole_server $serv, $worker_id)
     {
-        echo "task";
-        $this->todo();
+        var_dump($worker_id);
+
+
+//        $this->todo();
     }
 
 
     public function onFinish(swoole_server $serv, $worker_id)
     {
-        echo "finish";
+
+//        echo "finish";
     }
 
     public function onRequest(swoole_http_request $request, swoole_http_response $response)
@@ -210,14 +223,17 @@ abstract class rpcServer
 
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
+
+        var_dump($this->redis_pool);
 //        var_dump("receive :".$data);
         $tmp = packet::packDecode($data,"tcp");
-        var_dump($tmp);
+//        var_dump($tmp);
 
         $pkg = "hello";
         $s_pkg = packet::packEncode($pkg);
-        $server->send($fd, $s_pkg);
+//        $server->send($fd, $s_pkg);
 
+        $server->task($s_pkg,0);
 //        $server->tick(1000, function () use ($server, $fd) {
 //            $server->send($fd, packet::packEncode("tmp data\r\n"));
 //        });
