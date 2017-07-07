@@ -36,10 +36,10 @@ class Client
         $i = 0;
         while( $i < 1 ) {
             $this->client->send( $msg_normal );
-            sleep(1);
+//            sleep(1);
             $i ++;
             $data = $this->client->recv();
-            var_dump($data);
+            var_dump("rev: ".$data);
             $data = packet::packDecode($data);
             var_dump($data);
 

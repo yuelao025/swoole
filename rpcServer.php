@@ -123,11 +123,6 @@ abstract class rpcServer
         }else{
             var_dump("=>".$status);
         }
-        //
-        if($worker_id == $serv->setting['worker_num'] + $serv->setting['task_worker_num'] -1)
-        {
-            var_dump("pool:" .$this->redis_pool);
-        }
 
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
@@ -156,18 +151,39 @@ abstract class rpcServer
 
     abstract public function todo();
 
-    public function onTask(swoole_server $serv, $worker_id)
+    public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
-        var_dump("ontask :".$worker_id);
 
+//        var_dump($this->redis_pool);
+//        var_dump("receive :".$data);
+        $tmp = packet::packDecode($data);
+        var_dump($tmp,$fd);
 
-//        $this->todo();
+        $pkg = "hello";
+        $s_pkg['pkg'] = packet::packEncode($pkg,"tcp");
+        var_dump($s_pkg['pkg']);
+        $s_pkg['fd'] = $fd;
+//        $server->send($fd, $s_pkg);
+
+        $server->task($s_pkg,0);
+//        $server->tick(1000, function () use ($server, $fd) {
+//            $server->send($fd, packet::packEncode("tmp data\r\n"));
+//        });
+
+    }
+
+    public function onTask(swoole_server $serv, $task_id, $from_id, $data)
+    {
+        var_dump(" task_id: ".$task_id
+                    ." from_id :".$from_id,$data);
+        $this->todo();
     }
 
 
-    public function onFinish(swoole_server $serv, $worker_id)
+    public function onFinish(swoole_server $serv, $task_id, $data)
     {
-
+        $serv->send($data['fd'],$data['pkg']);
+        return true;
 //        echo "finish";
     }
 
@@ -223,25 +239,6 @@ abstract class rpcServer
             $response->status(503);
             $response->end(var_export($e, true));
         }
-    }
-
-    public function onReceive(swoole_server $server,$fd,$from_id ,$data)
-    {
-
-        var_dump($this->redis_pool);
-//        var_dump("receive :".$data);
-        $tmp = packet::packDecode($data,"tcp");
-//        var_dump($tmp);
-
-        $pkg = "hello";
-        $s_pkg = packet::packEncode($pkg);
-//        $server->send($fd, $s_pkg);
-
-        $server->task($s_pkg,0);
-//        $server->tick(1000, function () use ($server, $fd) {
-//            $server->send($fd, packet::packEncode("tmp data\r\n"));
-//        });
-
     }
 
 
