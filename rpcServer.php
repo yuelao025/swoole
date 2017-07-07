@@ -205,9 +205,12 @@ abstract class rpcServer
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
         echo "receive :".$data;
-        $server->tick(1000, function () use ($server, $fd) {
-            $server->send($fd, "hello world");
-        });
+        $server->send($fd, "hello world");
+
+//        $server->tick(1000, function () use ($server, $fd) {
+//            $server->send($fd, "hello world");
+//        });
+
     }
 
 
@@ -237,7 +240,9 @@ abstract class rpcServer
         }
     }
 
-
+    /**
+     * 新建进程 【可以做监控；日志；服务发现等】
+     */
     public function newProcess()
     {
         echo "restart new process!\r\n";

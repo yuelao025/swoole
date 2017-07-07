@@ -18,9 +18,14 @@ class Client
         // $msg_eof = "This is a Msg\r\n";
         $msg_length = pack("N" , strlen($msg_normal) ). $msg_normal;
         $i = 0;
-        while( $i < 10 ) {
+        while( $i < 3 ) {
             $this->client->send( $msg_length );
             $i ++;
+            $data = $this->client->recv();
+            var_dump($data);
+        }
+//        while (1)
+        {
         }
     }
 }
