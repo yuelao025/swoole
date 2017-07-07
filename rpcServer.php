@@ -240,6 +240,8 @@ abstract class rpcServer
 
     public function newProcess()
     {
+        echo "restart new process!\r\n";
+
 //        $process = new \swoole_process(function (){
 //        });
         //        $process_pid = $process->pid;
