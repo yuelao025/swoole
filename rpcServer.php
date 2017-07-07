@@ -132,7 +132,7 @@ abstract class rpcServer
         if($istask)
         {
             // task worker
-            file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
+//            file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
             $redis->lpush("debug_work_id", $worker_id);
             swoole_set_process_name("server task worker");
             $this->initTaskWorker($serv, $worker_id);
@@ -143,7 +143,7 @@ abstract class rpcServer
             $this->initWorker($serv, $worker_id);
 
             $data = ['info' => 'some info ...'];
-            file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
+//            file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
             $redis->lpush("debug_work_id", $worker_id);
 //        $serv->task($data);
         }
