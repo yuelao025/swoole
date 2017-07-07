@@ -21,6 +21,7 @@ abstract class rpcServer
     ];
 
     private $tcp_config = [
+
         'open_length_check' => 1,
         'package_length_type' => 'N',
         'package_length_offset' => 0,
@@ -43,6 +44,8 @@ abstract class rpcServer
         'log_dump_type' => 'file',//file|logserver
         'log_path' => '/tmp/bizlog/', //业务日志 dump path
     ];
+
+
 
     private $http_port;
     private $tcp_port;
@@ -169,9 +172,7 @@ abstract class rpcServer
         $model = (isset($path_info[1]) && !empty($path_info[1])) ? $path_info[1] : 'home';
         $controller = (isset($path_info[2]) && !empty($path_info[2])) ? $path_info[2] : 'index';
         $method = (isset($path_info[3]) && !empty($path_info[3])) ? $path_info[3] : 'index';
-
         // var_dump($model,$controller,$method);
-
         //放在此处是ok的；
 //    swoole_timer_tick(1000, function(){
 //        echo "timeout\n";
@@ -181,8 +182,6 @@ abstract class rpcServer
 //    swoole_timer_after(1000,function (){
 //        echo "request timer after !";
 //    });
-
-
         try {
             $class_name = "\\{$model}\\{$controller}";
 
@@ -214,10 +213,13 @@ abstract class rpcServer
 //        var_dump("receive :".$data);
         $tmp = packet::packDecode($data,"tcp");
         var_dump($tmp);
-        $server->send($fd, "hello");
+
+        $pkg = "hello";
+        $s_pkg = packet::packEncode($pkg);
+        $server->send($fd, $s_pkg);
 
 //        $server->tick(1000, function () use ($server, $fd) {
-//            $server->send($fd, "hello world");
+//            $server->send($fd, packet::packEncode("tmp data\r\n"));
 //        });
 
     }
@@ -238,6 +240,7 @@ abstract class rpcServer
      */
     public function autoloader($class)
     {
+//        var_dump($class);
         // 构建文件名, 将namespace中的 '\' 替换为文件系统的分隔符 '/'
         $baseClasspath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         // var_dump("autoLoader:".$baseClasspath);

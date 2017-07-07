@@ -27,7 +27,7 @@ class Client
             exit;
         }
 
-        $msg_normal = "This test!\r\n";
+        $msg_normal = "This test!";
 
         $msg_normal = packet::packEncode($msg_normal);
         // $msg_eof = "This is a Msg\r\n";
@@ -36,8 +36,11 @@ class Client
         $i = 0;
         while( $i < 3 ) {
             $this->client->send( $msg_normal );
+            sleep(1);
             $i ++;
             $data = $this->client->recv();
+            var_dump($data);
+            $data = packet::packDecode($data);
             var_dump($data);
 
 //            $revData = packet::packDecode($data);

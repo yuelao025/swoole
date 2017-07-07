@@ -19,17 +19,17 @@ class customServ extends rpcServer
 
     public function initTaskWorker($serv, $worker_id)
     {
-        echo __FUNCTION__;
+        echo __FUNCTION__."\r\n";
     }
 
     public function todo()
     {
-        echo __FUNCTION__;
+        echo __FUNCTION__."\r\n";
     }
 
     public function initWorker($serv, $worker_id)
     {
-        echo __FUNCTION__;
+        echo __FUNCTION__."\r\n";
     }
 
 }
