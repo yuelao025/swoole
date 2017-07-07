@@ -62,9 +62,9 @@ function autoloader($class)
 //     var_dump("autoLoader:".$baseClasspath);
     // 如果文件存在, 引用文件
     $classpath_tmp = (__DIR__ . DIRECTORY_SEPARATOR)."../";
-//    var_dump($classpath_tmp);die;
+//    var_dump($classpath_tmp);
     $classpath = $classpath_tmp.$baseClasspath;
-//    var_dump($classpath);
+    var_dump($classpath);
     if (is_file($classpath)) {
         require "{$classpath}";
         return;
