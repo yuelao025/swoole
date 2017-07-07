@@ -121,9 +121,13 @@ abstract class rpcServer
             $this->redis_pool[$worker_id] = $redis;
 
         }else{
-            var_dump($status);
+            var_dump("=>".$status);
         }
         //
+        if($worker_id == $serv->setting['worker_num'] + $serv->setting['task_worker_num'] -1)
+        {
+            var_dump("pool:" .$this->redis_pool);
+        }
 
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
@@ -154,7 +158,7 @@ abstract class rpcServer
 
     public function onTask(swoole_server $serv, $worker_id)
     {
-        var_dump($worker_id);
+        var_dump("ontask :".$worker_id);
 
 
 //        $this->todo();
