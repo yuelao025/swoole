@@ -156,19 +156,24 @@ abstract class rpcServer
 
 //        var_dump($this->redis_pool);
 //        var_dump("receive :".$data);
-        $tmp = packet::packDecode($data);
-        var_dump($tmp,$fd);
 
-        $pkg = "hello";
-        $s_pkg['pkg'] = packet::packEncode($pkg,"tcp");
-        var_dump($s_pkg['pkg']);
-        $s_pkg['fd'] = $fd;
+
+        $msg_normal = "test 哦拉了绿绿!";
+
+        $msg_normal = packet::packEncode($msg_normal);
+
+//        $tmp = packet::packDecode($data);
+//        var_dump($tmp,$fd);
+
+//        $pkg = "hello";
+//        $pkg = pack('N', strlen($pkg)).$pkg;
+//        $s_pkg["pkg"] = packet::packEncode($pkg,"tcp");
+        $s_pkg["pkg"] = $msg_normal;
+        var_dump($s_pkg["pkg"]);
+        $s_pkg["fd"] = $fd;
 //        $server->send($fd, $s_pkg);
 
         $server->task($s_pkg,0);
-//        $server->tick(1000, function () use ($server, $fd) {
-//            $server->send($fd, packet::packEncode("tmp data\r\n"));
-//        });
 
     }
 
@@ -177,14 +182,21 @@ abstract class rpcServer
         var_dump(" task_id: ".$task_id
                     ." from_id :".$from_id,$data);
         $this->todo();
+        //方式1 直接发送；
+//        $rlt =  $serv->send($data["fd"],$data["pkg"]);
+        //方式2： finish 处理
+        $serv->finish($data);
+
+
     }
 
 
-    public function onFinish(swoole_server $serv, $task_id, $data)
+    public function onFinish($serv, $task_id, $data)
     {
-        $serv->send($data['fd'],$data['pkg']);
-        return true;
-//        echo "finish";
+
+       $rlt =  $serv->send($data["fd"],$data["pkg"]);
+//       var_dump($rlt);
+        echo "finish";
     }
 
     public function onRequest(swoole_http_request $request, swoole_http_response $response)
