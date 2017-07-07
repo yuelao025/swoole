@@ -17,7 +17,7 @@ class customServ extends rpcServer
 
     }
 
-    public function initTask()
+    public function initTaskWorker($serv, $worker_id)
     {
         echo __FUNCTION__;
     }
@@ -26,6 +26,12 @@ class customServ extends rpcServer
     {
         echo __FUNCTION__;
     }
+
+    public function initWorker($serv, $worker_id)
+    {
+        echo __FUNCTION__;
+    }
+
 }
 
 

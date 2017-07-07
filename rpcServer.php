@@ -7,6 +7,8 @@
  * Time: 下午4:35
  */
 
+use util\packet;
+
 abstract class rpcServer
 {
     private $http_config = [//    'reactor_num' => 2, //reactor thread num
@@ -101,7 +103,9 @@ abstract class rpcServer
         file_put_contents($manager_pid_path, $manager_pid_data);
     }
 
-    abstract public function initTask();
+    abstract public function initTaskWorker($serv, $worker_id);
+    abstract public function initWorker($serv, $worker_id);
+
 
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
@@ -109,18 +113,21 @@ abstract class rpcServer
         $redis->connect("127.0.0.1", 6379);
 
         $task_worker_id = $serv->worker_pid;
+        $istask = $serv->taskworker;
 
-        if ($worker_id >= $serv->setting['worker_num']) {
+//        if ($worker_id >= $serv->setting['worker_num'])  //同下
+        if($istask)
+        {
             // task worker
             file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
             $redis->lpush("debug_work_id", $worker_id);
             swoole_set_process_name("server task worker");
-
-            $this->initTask($serv, $worker_id);
+            $this->initTaskWorker($serv, $worker_id);
 
         } else {
             //worker
             swoole_set_process_name("server  worker");
+            $this->initWorker($serv, $worker_id);
 
             $data = ['info' => 'some info ...'];
             file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
@@ -204,8 +211,10 @@ abstract class rpcServer
 
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
-        echo "receive :".$data;
-        $server->send($fd, "hello world");
+//        var_dump("receive :".$data);
+        $tmp = packet::packDecode($data,"tcp");
+        var_dump($tmp);
+        $server->send($fd, "hello");
 
 //        $server->tick(1000, function () use ($server, $fd) {
 //            $server->send($fd, "hello world");
