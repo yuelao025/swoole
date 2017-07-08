@@ -151,6 +151,7 @@ abstract class rpcServer
 
     abstract public function todo();
 
+    //worker 进程回调函数  【注意：worker 、task worker使用unixsocket进程通信 】
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
 
@@ -174,28 +175,36 @@ abstract class rpcServer
         $s_pkg["fd"] = $fd;
 //        $server->send($fd, $s_pkg);
 
+        // 发送给task worker
         $server->task($s_pkg,0);
 
     }
 
+    //task worker  进程回调函数
     public function onTask(swoole_server $serv, $task_id, $from_id, $data)
     {
 //        var_dump(" task_id: ".$task_id
 //                    ." from_id :".$from_id,$data);
         $this->todo();
-        //方式1 直接发送；
+        //方式1 直接发送；给客户端
 //        $rlt =  $serv->send($data["fd"],$data["pkg"]);
         //方式2： finish 处理
+        // notify worker 进程
         $serv->finish($data);
+
+        //注意了 此处return  xxx  是给worker返回信息 ；在onfinish 回调中对应data
+        return "to worker !!";
 
 
     }
 
-
+    // worker进程回调函数
     public function onFinish($serv, $task_id, $data)
     {
 
        $rlt =  $serv->send($data["fd"],$data["pkg"]);
+
+       var_dump($data);
 //       var_dump($rlt);
 //        echo "finish";
     }
