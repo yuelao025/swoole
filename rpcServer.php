@@ -56,6 +56,7 @@ abstract class rpcServer
     private $tcp_server;
 
     private $redis_pool = [];
+    private $mysql_pool = [];
 
 
     /**
@@ -114,6 +115,8 @@ abstract class rpcServer
 
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
+        //redis pool;
+
         $redis = new \redis();
         $status = $redis->connect("127.0.0.1", 6379);
         if($status)
@@ -126,7 +129,8 @@ abstract class rpcServer
 
         var_dump($this->redis_pool);
 
-        
+        $this->redis_pool[$worker_id]->set($worker_id,111);
+
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
 
