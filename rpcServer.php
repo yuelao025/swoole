@@ -176,7 +176,9 @@ abstract class rpcServer
 //        $server->send($fd, $s_pkg);
 
         // 发送给task worker
-        $server->task($s_pkg,0);
+        $recdata = $server->task($s_pkg,0);
+
+        var_dump("onrev: ",$data);
 
     }
 
@@ -192,7 +194,7 @@ abstract class rpcServer
 
         //方式2： finish 处理
         // notify worker 进程
-        $serv->finish($data);
+        $serv->finish($data);  ///注意了其实主动调用finish === return "xxx";
 
         //注意了 此处return  xxx  是给worker返回信息 ；在onfinish 回调中对应data
         //但是此处调用了finish 到了onfinish 后面就不要返回了？否则data不在是之前的fd and pkg的data了？
