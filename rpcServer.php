@@ -59,6 +59,11 @@ abstract class rpcServer
     private $mysql_pool = [];
 
 
+    private $dsn = "mysql:host=localhost;port=3306";
+    private $mysql_user = "root";
+
+    private $mysql_pwd = '37214728';
+
     /**
      * rpcserver constructor.
      * @param $http_port
@@ -130,6 +135,11 @@ abstract class rpcServer
         var_dump($this->redis_pool);
 
         $this->redis_pool[$worker_id]->set($worker_id,111);
+
+
+        $this->mysql_pool[$worker_id] = new PDO($this->dsn,$this->mysql_user,$this->mysql_pwd);
+
+
 
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
