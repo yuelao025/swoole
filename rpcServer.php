@@ -178,7 +178,7 @@ abstract class rpcServer
         // 发送给task worker
         $recdata = $server->task($s_pkg,0);
 
-        var_dump("onrev: ",$data);
+        var_dump("onrev: ",$recdata);
 
     }
 
