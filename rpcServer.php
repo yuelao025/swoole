@@ -124,6 +124,9 @@ abstract class rpcServer
             var_dump("=>".$status);
         }
 
+        var_dump($this->redis_pool);
+
+        
         $task_worker_id = $serv->worker_pid;
         $istask = $serv->taskworker;
 
@@ -203,7 +206,7 @@ abstract class rpcServer
 
     }
 
-    // worker进程回调函数
+    // worker进程回调函数 [worker调用task后；task返回给该worker的回调函数]
     public function onFinish($serv, $task_id, $data)
     {
 
