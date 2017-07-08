@@ -188,12 +188,15 @@ abstract class rpcServer
         $this->todo();
         //方式1 直接发送；给客户端
 //        $rlt =  $serv->send($data["fd"],$data["pkg"]);
+
+
         //方式2： finish 处理
         // notify worker 进程
         $serv->finish($data);
 
         //注意了 此处return  xxx  是给worker返回信息 ；在onfinish 回调中对应data
-        return "to worker !!";
+        //但是此处调用了finish 到了onfinish 后面就不要返回了？否则data不在是之前的fd and pkg的data了？
+        return "to worker";
 
 
     }
@@ -202,9 +205,16 @@ abstract class rpcServer
     public function onFinish($serv, $task_id, $data)
     {
 
-       $rlt =  $serv->send($data["fd"],$data["pkg"]);
+       if($data === "to woker")
+       {
+           var_dump($data)
+       }
+       else{
+        $rlt =  $serv->send($data["fd"],$data["pkg"]);
+        var_dump($data);
 
-       var_dump($data);
+       }
+
 //       var_dump($rlt);
 //        echo "finish";
     }
@@ -296,7 +306,7 @@ abstract class rpcServer
      */
     public function newProcess()
     {
-        echo "restart new process!\r\n";
+        echo "start new process!\r\n";
 
 //        $process = new \swoole_process(function (){
 //        });
