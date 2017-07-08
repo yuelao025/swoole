@@ -205,7 +205,7 @@ abstract class rpcServer
     public function onFinish($serv, $task_id, $data)
     {
 
-       if($data === "to woker")
+       if($data === "to worker")
        {
            var_dump($data);
        } else{
