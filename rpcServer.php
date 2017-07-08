@@ -207,9 +207,8 @@ abstract class rpcServer
 
        if($data === "to woker")
        {
-           var_dump($data)
-       }
-       else{
+           var_dump($data);
+       } else{
         $rlt =  $serv->send($data["fd"],$data["pkg"]);
         var_dump($data);
 
