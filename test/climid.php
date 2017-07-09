@@ -198,7 +198,7 @@ class climid
             $data = Packet::packFormat($this->guid, $e->getMessage(), $e->getCode());
             return $data;
         }
-
+var_dump($sendData);
         $ret = $client->send($sendData);
 //var_dump($ret);
 
