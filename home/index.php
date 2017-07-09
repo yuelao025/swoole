@@ -27,7 +27,7 @@ class index
 	public function demo()
 	{
 	    $ins = new climid($this->config);
-        $ret = $ins->singleAPI("/module_a/abc", array("mark" => 234), 2, "127.0.0.1","8080");
+        $ret = $ins->singleAPI("/module_a/abc", "test", 2, "127.0.0.1","8080");
 //        var_dump( $ret);
 	    return json_encode($ret);
 

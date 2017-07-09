@@ -201,7 +201,7 @@ class climid
 
         $ret = $client->send($sendData);
 //var_dump($ret);
-        
+
         //recive the response
         $data = $this->waitResult($client);
 //        var_dump( $data);
