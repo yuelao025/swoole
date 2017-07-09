@@ -307,6 +307,10 @@ abstract class rpcServer
             $result = $object->$method($request, $response);
 // var_dump($result);
             $response->status(200);
+            if(is_array($result))
+            {
+                $result = json_encode($result,JSON_UNESCAPED_UNICODE);
+            }
             $response->end($result);
         } catch (Exception $e) {
             // 返回异常信息

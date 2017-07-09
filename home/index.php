@@ -6,6 +6,7 @@ namespace home;
 use util\test;
 use util\ip;
 use test\climid;
+use model\user;
 
 
 class index
@@ -42,6 +43,12 @@ class index
 		return $info." default";
 	}
 
+	public function user()
+    {
+        $info = user::get();    
+	    return $info;
+    }
+    
 	public function getIp($request)
     {
         $ip = ip::getLocalIp();
