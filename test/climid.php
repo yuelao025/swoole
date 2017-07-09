@@ -138,6 +138,7 @@ class climid
 
         $sendData = Packet::packEncode($packet);
 
+        var_dump($sendData);
         $result = $this->doRequest($sendData);
 
         //retry when the send fail
