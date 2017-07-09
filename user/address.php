@@ -5,12 +5,12 @@ namespace user;
 
 class address
 {
-	public function demo()
+	public function demo($request)
 	{
 		return __FILE__;
 	}
 
-	public function index()
+	public function index($request)
 	{
 		return "address index.action..";
 	}

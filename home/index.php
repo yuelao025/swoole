@@ -24,7 +24,7 @@ class index
     ];
 
 
-	public function demo()
+	public function demo($request)
 	{
 	    $ins = new climid($this->config);
         $ret = $ins->singleAPI("/module_a/abc", "test", 2, "127.0.0.1","8080");
@@ -33,27 +33,30 @@ class index
 
 	}
 
-	public function index()
+	public function index($request)
 	{
+//	    var_dump($request);
+        $post = isset($request->post) ? $request->post : array();
+//        var_dump($post);
 	    $info = test::demo();
-		return $info." default index.action..";
+		return $info." default";
 	}
 
-	public function getIp()
+	public function getIp($request)
     {
         $ip = ip::getLocalIp();
         return $ip;
     }
 
 
-    public function reload()
+    public function reload($request)
     {
         $ins = new climid($this->config);
         $ret = $ins->singleAPI("/m/a", "reload", 1, "127.0.0.1","8080");
         return json_encode($ret,JSON_UNESCAPED_UNICODE);
     }
 
-    public function stats()
+    public function stats($request)
     {
         $ins = new climid($this->config);
         $ret = $ins->singleAPI("/m/a", "stats", 1, "127.0.0.1","8080");

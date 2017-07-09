@@ -16,7 +16,7 @@ abstract class rpcServer
         'dispatch_mode' => 3, // reactor线程投递到worker采用抢占模式 ；只会投递给处于闲置状态的Worker
         //    'reactor_num' => 2, //reactor 线程数目 ；默认是cpu核数 设置 <= work_num
         'task_worker_num' => 2,
-        'worker_num' => 2,    //worker process num
+        'worker_num' => 1,    //worker process num
 //    'backlog' => 128,   //listen backlog
 //    'max_request' => 50,
 //    'dispatch_mode' => 1,
@@ -127,7 +127,21 @@ abstract class rpcServer
 
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
-        spl_autoload_register([$this,'autoloader']);
+//        spl_autoload_register([$this,'autoloader']);
+        //以上竟然有区别！
+        spl_autoload_register(function ($class){
+            var_dump($class);
+            // 构建文件名, 将namespace中的 '\' 替换为文件系统的分隔符 '/'
+            $baseClasspath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+            // var_dump("autoLoader:".$baseClasspath);
+            // 如果文件存在, 引用文件
+            $classpath = __DIR__ . DIRECTORY_SEPARATOR . $baseClasspath;
+            if (is_file($classpath)) {
+                require "{$classpath}";
+                return;
+            }
+        });
+
         //redis pool;
         $redis = new \redis();
         $status = $redis->connect("127.0.0.1", 6379);
