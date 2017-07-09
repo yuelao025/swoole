@@ -141,10 +141,10 @@ class climid
         $result = $this->doRequest($sendData);
 
         //retry when the send fail
-        while ((!isset($result["code"]) || $result["code"] != 0) && $retry > 0) {
-            $result = $this->doRequest($sendData);
-            $retry--;
-        }
+//        while ((!isset($result["code"]) || $result["code"] != 0) && $retry > 0) {
+//            $result = $this->doRequest($sendData);
+//            $retry--;
+//        }
 
         return $result;
     }
