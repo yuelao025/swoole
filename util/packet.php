@@ -42,9 +42,9 @@ class packet
                 $sendStr = pack('N', strlen($sendStr) + 4) . $signedcode . $sendStr;
             } else {
 //                echo 1111;
-//                var_dump($sendStr);
+                var_dump("before".$sendStr);
                 $sendStr = pack('N', strlen($sendStr)) . $sendStr;
-//                var_dump($sendStr);
+                var_dump("after".$sendStr);
             }
             return $sendStr;
         } else if ($type === "http") {
