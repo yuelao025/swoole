@@ -49,7 +49,7 @@ class index
     public function reload()
     {
         $ins = new climid($this->config);
-        $ret = $ins->singleAPI("/m/a", "reload", 2, "127.0.0.1","8080");
+        $ret = $ins->singleAPI("/m/a", "reload", 1, "127.0.0.1","8080");
         return json_encode($ret,JSON_UNESCAPED_UNICODE);
     }
 

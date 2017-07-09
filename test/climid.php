@@ -138,7 +138,6 @@ class climid
 
         $sendData = Packet::packEncode($packet);
 
-        var_dump($sendData);
         $result = $this->doRequest($sendData);
 
         //retry when the send fail
@@ -199,12 +198,23 @@ class climid
             $data = Packet::packFormat($this->guid, $e->getMessage(), $e->getCode());
             return $data;
         }
-var_dump($sendData);
         $ret = $client->send($sendData);
 //var_dump($ret);
 
+        if($sendData !== packet::packEncode("reload"))
+        {
+            $data = $this->waitResult($client);
+        }
+        else{
+            $data = [
+                "code" => "0",
+                "msg" => "ok",
+                "data" => "reload all worker ok!",
+            ];
+        }
+
+
         //recive the response
-        $data = $this->waitResult($client);
 //        var_dump( $data);
         return $data;
     }
