@@ -43,7 +43,7 @@ class packet
             } else {
 //                echo 1111;
                 var_dump("before".$sendStr);
-                $sendStr = pack('N', strlen($sendStr)) . $sendStr;
+                $sendStr = pack('N',strlen($sendStr)).$sendStr;
                 var_dump("after".$sendStr);
             }
             return $sendStr;

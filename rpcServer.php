@@ -88,7 +88,6 @@ abstract class rpcServer
         $this->http_server->on("request", [$this, 'onRequest']);
 
 
-
         $this->tcp_server->on('receive', [$this, 'onReceive']);
 
 
@@ -96,8 +95,10 @@ abstract class rpcServer
 
     public function onStart(swoole_server $serv)
     {
-
-        swoole_set_process_name("server master worker");
+        if(PHP_OS !== "Darwin")
+        {
+            swoole_set_process_name("server master worker");
+        }
 
         $master_pid_path = $this->rpc_config['pid_path'] . $this->rpc_config['master_pid'];
         $master_pid_data = $serv->master_pid;
@@ -106,7 +107,11 @@ abstract class rpcServer
 
     public function onManagerStart(swoole_server $serv)
     {
-        swoole_set_process_name("server manager worker");
+        if(PHP_OS !== "Darwin")
+        {
+
+            swoole_set_process_name("server manager worker");
+        }
 
         $manager_pid_path = $this->rpc_config['pid_path'] . $this->rpc_config['manager_pid'];
         $manager_pid_data = $serv->manager_pid;
@@ -121,7 +126,6 @@ abstract class rpcServer
     {
         spl_autoload_register([$this,'autoloader']);
         //redis pool;
-
         $redis = new \redis();
         $status = $redis->connect("127.0.0.1", 6379);
         if($status)
@@ -132,12 +136,12 @@ abstract class rpcServer
             var_dump("=>".$status);
         }
 
-        var_dump($this->redis_pool);
+//        var_dump($this->redis_pool);
 
         $this->redis_pool[$worker_id]->set($worker_id,111);
 
 
-        $this->mysql_pool[$worker_id] = new PDO($this->dsn,$this->mysql_user,$this->mysql_pwd);
+//        $this->mysql_pool[$worker_id] = new PDO($this->dsn,$this->mysql_user,$this->mysql_pwd);
 
 
 
@@ -150,12 +154,18 @@ abstract class rpcServer
             // task worker
 //            file_put_contents("debug.txt", $task_worker_id . "=>" . $worker_id . "\r\n", FILE_APPEND);
             $redis->lpush("debug_work_id", $worker_id);
-            swoole_set_process_name("server task worker");
+            if(PHP_OS !== "Darwin")
+            {
+                swoole_set_process_name("server task worker");
+            }
             $this->initTaskWorker($serv, $worker_id);
 
         } else {
             //worker
-            swoole_set_process_name("server  worker");
+            if(PHP_OS !== "Darwin")
+            {
+                swoole_set_process_name("server  worker");
+            }
             $this->initWorker($serv, $worker_id);
 
             $data = ['info' => 'some info ...'];
@@ -331,7 +341,11 @@ var_dump($data);
         //方式1 ok！
         $this->http_server->addProcess(new swoole_process(function (){
             //test ok!
-            swoole_set_process_name("new!");
+            if(PHP_OS !== "Darwin")
+            {
+
+                swoole_set_process_name("new!");
+            }
             ///记住了改进程必须一直在；否则每次都会重新拉取！！严重注意了！
             while(1)
             {
