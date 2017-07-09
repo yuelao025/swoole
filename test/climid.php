@@ -134,7 +134,7 @@ class climid
      */
     public function singleAPI($name, $param, $retry = 0, $ip = "", $port = "")
     {
-        $packet = "fuck data !";
+        $packet = $param;
 
         $sendData = Packet::packEncode($packet);
 

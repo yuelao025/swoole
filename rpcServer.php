@@ -172,14 +172,21 @@ abstract class rpcServer
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
 
+        $decode = packet::packDecode($data);
+        var_dump($decode);
+        if($decode === "reload")
+        {
+            echo "reload server ...";
+            $server->send($fd, "reload ok!");
+            $server->reload();
+
+        }else{
+
 //        var_dump($this->redis_pool);
 //        var_dump("receive :".$data);
-//        echo "receive :";
-        $msg_normal = "test 哦拉了绿绿!";
+            $msg_normal = "test 哦拉了绿绿!";
 
-//        die;
-
-        $msg_normal = packet::packEncode($msg_normal);
+            $msg_normal = packet::packEncode($msg_normal);
 
 //        $tmp = packet::packDecode($data);
 //        var_dump($tmp,$fd);
@@ -187,15 +194,15 @@ abstract class rpcServer
 //        $pkg = "hello";
 //        $pkg = pack('N', strlen($pkg)).$pkg;
 //        $s_pkg["pkg"] = packet::packEncode($pkg,"tcp");
-        $s_pkg["pkg"] = $msg_normal;
+            $s_pkg["pkg"] = $msg_normal;
 //        var_dump($s_pkg["pkg"]);
-        $s_pkg["fd"] = $fd;
+            $s_pkg["fd"] = $fd;
 //        $server->send($fd, $s_pkg);
 
-        // 发送给task worker
-        $recdata = $server->task($s_pkg,0);
+            // 发送给task worker
+            $server->task($s_pkg,0);
+        }
 
-        var_dump("onrev: ",$recdata);
 
     }
 
