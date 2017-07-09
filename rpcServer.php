@@ -182,7 +182,7 @@ abstract class rpcServer
 
         }else{
 
-            $msg_normal = "test 哦拉了绿绿!";
+            $msg_normal = "test!";
             $msg_normal = packet::packEncode($msg_normal);
             $s_pkg["pkg"] = $msg_normal;
             $s_pkg["fd"] = $fd;
@@ -225,12 +225,10 @@ abstract class rpcServer
        {
            var_dump($data);
        } else{
-        $rlt =  $serv->send($data["fd"],$data["pkg"]);
-        var_dump($data);
+          $serv->send($data["fd"],$data["pkg"]);
+//        var_dump($data);
 
        }
-
-//       var_dump($rlt);
 //        echo "finish";
     }
 
