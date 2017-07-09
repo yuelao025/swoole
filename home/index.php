@@ -50,7 +50,7 @@ class index
     {
         $ins = new climid($this->config);
         $ret = $ins->singleAPI("/module_a/abc", "reload", 2, "127.0.0.1","8080");
-        return json_encode($ret);
+        return json_encode($ret,JSON_UNESCAPED_UNICODE);
     }
 
 

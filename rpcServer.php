@@ -182,21 +182,11 @@ abstract class rpcServer
 
         }else{
 
-//        var_dump($this->redis_pool);
-//        var_dump("receive :".$data);
             $msg_normal = "test 哦拉了绿绿!";
-
             $msg_normal = packet::packEncode($msg_normal);
-
-//        $tmp = packet::packDecode($data);
-//        var_dump($tmp,$fd);
-
-//        $pkg = "hello";
-//        $pkg = pack('N', strlen($pkg)).$pkg;
-//        $s_pkg["pkg"] = packet::packEncode($pkg,"tcp");
             $s_pkg["pkg"] = $msg_normal;
-//        var_dump($s_pkg["pkg"]);
             $s_pkg["fd"] = $fd;
+
 //        $server->send($fd, $s_pkg);
 
             // 发送给task worker
@@ -222,7 +212,7 @@ abstract class rpcServer
 
         //注意了 此处return  xxx  是给worker返回信息 ；在onfinish 回调中对应data
         //但是此处调用了finish 到了onfinish 后面就不要返回了？否则data不在是之前的fd and pkg的data了？
-        return "to worker";
+//        return "to worker";
 
 
     }
