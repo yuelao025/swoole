@@ -76,7 +76,6 @@ abstract class rpcServer
         $this->tcp_port = $tcp_port;
         $this->host = $host;
 
-        spl_autoload_register([$this,'autoloader']);
 
         $this->http_server = new swoole_http_server($host, $http_port);
         $this->tcp_server = $this->http_server->addlistener($host, $tcp_port, SWOOLE_SOCK_TCP);
@@ -120,6 +119,7 @@ abstract class rpcServer
 
     public function onWorkerStart(swoole_server $serv, $worker_id)
     {
+        spl_autoload_register([$this,'autoloader']);
         //redis pool;
 
         $redis = new \redis();
