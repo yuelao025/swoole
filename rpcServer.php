@@ -11,7 +11,10 @@ use util\packet;
 
 abstract class rpcServer
 {
-    private $http_config = [//    'reactor_num' => 2, //reactor thread num
+    private $http_config = [
+
+        'dispatch_mode' => 3, // reactor线程投递到worker采用抢占模式 ；只会投递给处于闲置状态的Worker
+        //    'reactor_num' => 2, //reactor 线程数目 ；默认是cpu核数 设置 <= work_num
         'task_worker_num' => 2,
         'worker_num' => 2,    //worker process num
 //    'backlog' => 128,   //listen backlog
@@ -205,7 +208,8 @@ abstract class rpcServer
 
 //        $server->send($fd, $s_pkg);
             // 发送给task worker
-            $server->task($s_pkg,0);
+            //  未指定目标Task进程，调用task方法会判断Task进程的忙闲状态，底层只会向处于空闲状态的Task进程投递任务 ;
+            $server->task($s_pkg);
         }
 
 
