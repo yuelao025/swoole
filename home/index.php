@@ -52,6 +52,6 @@ class index
         $ret = $ins->singleAPI("/module_a/abc", "reload", 2, "127.0.0.1","8080");
         return json_encode($ret);
     }
-    
+
 
 }

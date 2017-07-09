@@ -201,33 +201,10 @@ class climid
 
         $ret = $client->send($sendData);
 //var_dump($ret);
-
-        //ok fail
-        if (!$ret) {
-            $errorcode = $client->errCode;
-
-            //destroy error client obj to make reconncet
-            self::$client[$this->currentClientKey]->close(true);
-            unset(self::$client[$this->currentClientKey]);
-            // mark the current connection cannot be used, try another channel
-            $this->serverConfigBlock[$this->connectGroup][$this->currentClientKey] = 1;
-
-            if ($errorcode == 0) {
-                $msg = "connect fail.check host dns.";
-                $errorcode = -1;
-                $packet = Packet::packFormat($this->guid, $msg, $errorcode);
-            } else {
-                $msg = \socket_strerror($errorcode);
-                $packet = Packet::packFormat($this->guid, $msg, $errorcode);
-            }
-
-            return $packet;
-        }
-
+        
         //recive the response
         $data = $this->waitResult($client);
 //        var_dump( $data);
-        $data["guid"] = $this->guid;
         return $data;
     }
 
