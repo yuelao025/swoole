@@ -31,8 +31,8 @@ class packet
     public static function packEncode($data, $type = "tcp")
     {
         if ($type === "tcp") {
-//            $sendStr = serialize($data);
-            $sendStr = $data;
+            $sendStr = serialize($data);
+//            $sendStr = $data;
             //if compress the packet
             if (PacketConfig::SW_DATACOMPRESS_FLAG == true) {
                 $sendStr = gzencode($sendStr, 4);
@@ -84,7 +84,7 @@ class packet
         if (PacketConfig::SW_DATACOMPRESS_FLAG == true) {
             $result = gzdecode($result);
         }
-//        $result = unserialize($result);
+        $result = unserialize($result);
         return self::packFormat("OK", 0, $result);
     }
 

@@ -184,12 +184,19 @@ abstract class rpcServer
         $decode = packet::packDecode($data);
         if($decode['data'] === "reload")
         {
-            echo "reload server ...";
+            echo "reload server ...".PHP_EOL;
 //            $server->send($fd, "reload ok!");
 //            sleep(1);
             $server->reload();
-
-        }else{
+        }
+        else if($decode['data'] === "stats")
+        {
+            echo "stats server ...".PHP_EOL;
+            $info = $server->stats();
+            $info = packet::packEncode($info);
+            $server->send($fd, $info);
+        }
+        else{
 
             $msg_normal = "test!";
             $msg_normal = packet::packEncode($msg_normal);
@@ -197,7 +204,6 @@ abstract class rpcServer
             $s_pkg["fd"] = $fd;
 
 //        $server->send($fd, $s_pkg);
-
             // 发送给task worker
             $server->task($s_pkg,0);
         }
