@@ -171,7 +171,7 @@ abstract class rpcServer
     //worker 进程回调函数  【注意：worker 、task worker使用unixsocket进程通信 】
     public function onReceive(swoole_server $server,$fd,$from_id ,$data)
     {
-
+var_dump($data);
         $decode = packet::packDecode($data);
         var_dump($decode);
         if($decode === "reload")
