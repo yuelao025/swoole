@@ -130,7 +130,7 @@ abstract class rpcServer
 //        spl_autoload_register([$this,'autoloader']);
         //以上竟然有区别！
         spl_autoload_register(function ($class){
-            var_dump($class);
+//            var_dump($class);
             // 构建文件名, 将namespace中的 '\' 替换为文件系统的分隔符 '/'
             $baseClasspath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
             // var_dump("autoLoader:".$baseClasspath);
@@ -339,7 +339,6 @@ abstract class rpcServer
      */
     public function autoloader($class)
     {
-//        var_dump($class);
         // 构建文件名, 将namespace中的 '\' 替换为文件系统的分隔符 '/'
         $baseClasspath = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
         // var_dump("autoLoader:".$baseClasspath);
