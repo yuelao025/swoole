@@ -270,13 +270,13 @@ class MysqliDb
         }
 
         if (empty($this->host)) {
-            throw new Exception('MySQL host is not set');
+            throw new \Exception('MySQL host is not set');
         }
 
         $this->_mysqli = new \mysqli($this->host, $this->username, $this->password, $this->db, $this->port);
 
         if ($this->_mysqli->connect_error) {
-            throw new Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
+            throw new \Exception('Connect Error ' . $this->_mysqli->connect_errno . ': ' . $this->_mysqli->connect_error, $this->_mysqli->connect_errno);
         }
 
         if ($this->charset) {
@@ -403,7 +403,7 @@ class MysqliDb
 
         // Failed?
         if(!$stmt){
-            throw new Exception("Unprepared Query Failed, ERRNO: ".$this->mysqli()->errno." (".$this->mysqli()->error.")", $this->mysqli()->errno);
+            throw new \Exception("Unprepared Query Failed, ERRNO: ".$this->mysqli()->errno." (".$this->mysqli()->error.")", $this->mysqli()->errno);
         };
 
         // return stmt for future use
@@ -924,7 +924,7 @@ class MysqliDb
         $joinType = strtoupper(trim($joinType));
 
         if ($joinType && !in_array($joinType, $allowedTypes)) {
-            throw new Exception('Wrong JOIN type: ' . $joinType);
+            throw new \Exception('Wrong JOIN type: ' . $joinType);
         }
 
         if (!is_object($joinTable)) {
@@ -952,7 +952,7 @@ class MysqliDb
         // We have to check if the file exists
         if(!file_exists($importFile)) {
             // Throw an exception
-            throw new Exception("importCSV -> importFile ".$importFile." does not exists!");
+            throw new \Exception("importCSV -> importFile ".$importFile." does not exists!");
             return;
         }
 
@@ -1015,7 +1015,7 @@ class MysqliDb
         // We have to check if the file exists
         if(!file_exists($importFile)) {
             // Does not exists
-            throw new Exception("loadXml: Import file does not exists");
+            throw new \Exception("loadXml: Import file does not exists");
             return;
         }
 
@@ -1078,7 +1078,7 @@ class MysqliDb
 
 
         if (empty($orderbyDirection) || !in_array($orderbyDirection, $allowedDirection)) {
-            throw new Exception('Wrong order direction: ' . $orderbyDirection);
+            throw new \Exception('Wrong order direction: ' . $orderbyDirection);
         }
 
         if (is_array($customFields)) {
@@ -1131,7 +1131,7 @@ class MysqliDb
                 break;
             default:
                 // Else throw an exception
-                throw new Exception("Bad lock type: Can be either READ or WRITE");
+                throw new \Exception("Bad lock type: Can be either READ or WRITE");
                 break;
         }
         return $this;
@@ -1186,7 +1186,7 @@ class MysqliDb
         }
         // Something went wrong
         else {
-            throw new Exception("Locking of table ".$table." failed", $errno);
+            throw new \Exception("Locking of table ".$table." failed", $errno);
         }
 
         // Return the success value
@@ -1219,7 +1219,7 @@ class MysqliDb
         }
         // Something went wrong
         else {
-            throw new Exception("Unlocking of tables failed", $errno);
+            throw new \Exception("Unlocking of tables failed", $errno);
         }
 
 
@@ -1487,7 +1487,7 @@ class MysqliDb
                 $result = new stdClass ();
                 foreach ($row as $key => $val) {
                     if (is_array($val)) {
-                        $result->$key = new stdClass ();
+                        $result->$key = new \stdClass ();
                         foreach ($val as $k => $v) {
                             $result->$key->$k = $v;
                         }
@@ -1978,7 +1978,7 @@ class MysqliDb
             }
 
             if (!in_array($type, array_keys($types))) {
-                throw new Exception("invalid interval type in '{$diff}'");
+                throw new \Exception("invalid interval type in '{$diff}'");
             }
 
             $func .= " " . $incr . " interval " . $items . " " . $types[$type] . " ";
@@ -2013,7 +2013,7 @@ class MysqliDb
     public function inc($num = 1)
     {
         if (!is_numeric($num)) {
-            throw new Exception('Argument supplied to inc must be a number');
+            throw new \Exception('Argument supplied to inc must be a number');
         }
         return array("[I]" => "+" . $num);
     }
@@ -2028,7 +2028,7 @@ class MysqliDb
     public function dec($num = 1)
     {
         if (!is_numeric($num)) {
-            throw new Exception('Argument supplied to dec must be a number');
+            throw new \Exception('Argument supplied to dec must be a number');
         }
         return array("[I]" => "-" . $num);
     }
