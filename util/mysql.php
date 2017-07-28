@@ -14,12 +14,24 @@ class mysql
 
     protected $db;
     protected static $instance;
+
+// remote
     private $conf = [
-        'HOST' => '127.0.0.1',
-        'USER' => 'root',
-        'PASSWORD' =>  '123456',
-        'DB_NAME' => 'blog2'
+        'USER' => 'supplieradmim',
+        'PASSWORD' => '7uxYbBNg',
+        'DB_NAME' => 'supplier',
+        'HOST' => '192.168.1.247',
+        'port' => '3306',
+        'charset' => 'utf8'
     ];
+
+// local
+//    private $conf = [
+//        'HOST' => '127.0.0.1',
+//        'USER' => 'root',
+//        'PASSWORD' =>  '123456',
+//        'DB_NAME' => 'blog2'
+//    ];
     
     public function __construct()
     {

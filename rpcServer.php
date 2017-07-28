@@ -65,7 +65,7 @@ abstract class rpcServer
     private $dsn = "mysql:host=localhost;port=3306";
     private $mysql_user = "root";
 
-    private $mysql_pwd = '37214728';
+    private $mysql_pwd = '123456';
 
     /**
      * rpcserver constructor.

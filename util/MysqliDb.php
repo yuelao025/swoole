@@ -1811,7 +1811,7 @@ class MysqliDb
             $msg = $this->mysqli()->error . " query: " . $this->_query;
             $num = $this->mysqli()->errno;
             $this->reset();
-            throw new Exception($msg, $num);
+            throw new \Exception($msg, $num);
         }
 
         if ($this->traceEnabled) {

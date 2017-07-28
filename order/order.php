@@ -3,6 +3,8 @@
 
 namespace order;
 
+use model\user;
+
 class order
 {
 	public function demo($request)
@@ -12,7 +14,11 @@ class order
 
 	public function index($request)
 	{
-		return " order index.action..";
+//	    var_dump($request->get);
+        $sku = $request->get;
+	    $data = user::getsku($sku);
+	    echo  json_encode($data);
+
 	}
 
 }
